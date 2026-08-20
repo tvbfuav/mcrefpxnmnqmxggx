@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 # 🎯 全局默认地区设置 (如果想要永久换地区，只改这里！)
 # 支持多个地区，用逗号隔开，例如 "SJC,LAX,HKG"
 # ==========================================
-DEFAULT_REGIONS = "LAX"
+DEFAULT_REGIONS = "LAX,MIA,DFW,HKG,TPE,SIN,ICN,NRT,VIE,SYD,GRU,YYZ,ZRH,HAM,MAD,CDG,LHR,DEL,MXP,AMS,DME,RUH,JNB"
 # ==========================================
 
     # === Cloudflare IPv4 Ranges (IP段配置区) ===
@@ -138,8 +138,8 @@ def main():
     target_regions = [r.strip().upper() for r in region_input.split(",") if r.strip()]
     print(f"Target Regions dynamically set to: {target_regions}")
     
-    check_api_url = "https://proxyip.xxxxxxx.nyc.mn/check"
-    sync_count = int(os.environ.get("SYNC_COUNT", 10))
+    check_api_url = "https://fstahazqaeqwbski.perfectcomputers.eu.org/check"
+    sync_count = int(os.environ.get("SYNC_COUNT", 1))
     scan_count = int(os.environ.get("SCAN_COUNT", 2000))
     
     # === 从 ips-v4.txt 中提取历史优秀 IP 段 (/24) ===
@@ -186,7 +186,7 @@ def main():
         
         # === 并发线程配置区 ===
         # 控制同时发起多少个测速请求，默认 50，太高容易导致测速接口崩溃
-        with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=200) as executor:
             futures = {executor.submit(test_ip, ip, check_api_url): ip for ip in ips_to_test}
             for future in concurrent.futures.as_completed(futures):
                 result = future.result()
